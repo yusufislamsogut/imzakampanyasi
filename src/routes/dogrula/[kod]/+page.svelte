@@ -53,6 +53,10 @@
 					{zatenDogrulanmis ? 'Zaten Doğrulanmış' : 'Doğrulama Başarılı!'}
 				</h1>
 				<p class="text-gray-600 mb-6">{message}</p>
+				<div class="bg-green-50 border border-green-200 rounded-lg p-4 text-green-800 text-sm mb-6">
+					<p><strong>Teşekkürler!</strong> İmzanız başarıyla doğrulandı. Kampanyamızın daha fazla kişiye ulaşması için paylaşmayı düşünebilirsiniz.</p>
+					<p class="mt-1">Toplumsal farkındalık için tek bir imza bile çok değerli. Desteğiniz için minnettarız.</p>
+				</div>
 				
 				{#if !zatenDogrulanmis}
 					<div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
@@ -70,10 +74,7 @@
 					>
 						Ana Sayfaya Dön
 					</a>
-					
-					<div class="text-sm text-gray-500">
-						<p>Kampanyayı sosyal medyada paylaşmayı unutmayın!</p>
-					</div>
+					<p class="text-sm text-gray-500">Kampanyayı sosyal medyada paylaşmayı unutmayın!</p>
 				</div>
 			</div>
 		{:else}

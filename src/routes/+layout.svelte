@@ -15,27 +15,29 @@
 	});
 </script>
 
+
+
 <div class="min-h-screen bg-gray-50">
 	<!-- Header -->
 <header class="bg-green-700 text-white shadow-lg">
 		<div class="container mx-auto px-4">
 			<nav class="flex items-center justify-between py-4">
-				<div class="flex items-center space-x-3">
+				<a href="/" class="flex items-center space-x-3 cursor-pointer">
 					<img src="/images/logo.png" alt="HÜDA PAR" class="w-9 h-9 rounded-full bg-white p-1 object-contain" />
 					<div>
 						<h1 class="text-xl font-bold leading-5">HÜDA PAR</h1>
 						<p class="text-green-200 text-xs">İmza Kampanyası</p>
 					</div>
-				</div>
+				</a>
 				
-				<div class="hidden md:flex items-center space-x-6">
-					<a href="/kanun-teklifimiz" class="hover:text-green-200 transition-colors duration-200">
+				<div class="hidden md:flex items-center space-x-2">
+					<a href="/kanun-teklifimiz" class="px-3 py-2 rounded-md text-green-50/90 font-medium hover:bg-white/10 hover:text-white transition-colors duration-200 cursor-pointer">
 						Kanun Teklifimiz
 					</a>
-					<a href="/" class="hover:text-green-200 transition-colors duration-200">
+					<a href="/" class="px-3 py-2 rounded-md text-green-50/90 font-medium hover:bg-white/10 hover:text-white transition-colors duration-200 cursor-pointer">
 						İmzala
 					</a>
-					<a href="/iletisim" class="hover:text-green-200 transition-colors duration-200">
+					<a href="https://hudapar.org/iletisim" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-md text-green-50/90 font-medium hover:bg-white/10 hover:text-white transition-colors duration-200 cursor-pointer">
 						İletişim
 					</a>
 				</div>
@@ -57,7 +59,7 @@
 					<a href="/" class="block py-2 hover:text-green-200 transition-colors duration-200">
 						İmzala
 					</a>
-					<a href="/iletisim" class="block py-2 hover:text-green-200 transition-colors duration-200">
+					<a href="https://hudapar.org/iletisim" target="_blank" rel="noopener noreferrer" class="block py-2 hover:text-green-200 transition-colors duration-200">
 						İletişim
 					</a>
 				</div>
