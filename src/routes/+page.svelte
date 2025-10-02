@@ -60,9 +60,9 @@
 				showShareModal = true;
 
 				// İmza eklendikten sonra sayfayı yenile
-				setTimeout(() => {
-					window.location.reload();
-				}, 2000);
+				// setTimeout(() => {
+				// 	window.location.reload();
+				// }, 2000);
 
 				// Formu temizle
 				formData = {
