@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { findImzaByDogrulamaKodu, dogrulaImza } from '$lib/database.js';
+import { directus, readItems, updateItem, readSingleton } from '$lib/directus/directus.js';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params }) {
@@ -13,15 +13,39 @@ export async function GET({ params }) {
 			);
 		}
 
-		// Doğrulama kodunu bul
-		const imza = findImzaByDogrulamaKodu(kod);
+		// Kampanya durumunu kontrol et
+		const ayarlar = await directus.request(
+			readSingleton('ayarlar', {
+				fields: ['kampanya_aktif']
+			})
+		);
 		
-		if (!imza) {
+		if (ayarlar?.kampanya_aktif === false) {
+			return json(
+				{ error: 'Kampanya sona ermiştir. Doğrulama işlemi yapılamaz.' },
+				{ status: 403 }
+			);
+		}
+
+		// Doğrulama kodunu bul
+		const imzaResult = await directus.request(readItems('imzalar', {
+			filter: {
+				dogrulama_kodu: { _eq: kod }
+			},
+			limit: 1
+		}));
+
+		// Directus'tan gelen veri yapısını kontrol et
+		const imzalar = Array.isArray(imzaResult) ? imzaResult : (imzaResult?.data || []);
+		
+		if (!Array.isArray(imzalar) || imzalar.length === 0) {
 			return json(
 				{ error: 'Geçersiz doğrulama kodu.' },
 				{ status: 404 }
 			);
 		}
+
+		const imza = imzalar[0];
 
 		if (imza.dogrulanmis) {
 			return json({
@@ -32,12 +56,18 @@ export async function GET({ params }) {
 		}
 
 		// İmzayı doğrulanmış olarak işaretle
-		dogrulaImza(imza);
+		await directus.request(updateItem('imzalar', imza.id, {
+			dogrulanmis: true,
+			dogrulama_tarihi: new Date().toISOString()
+		}));
 
 		return json({
 			success: true,
 			message: 'E-posta adresiniz başarıyla doğrulandı. İmzanız artık geçerli!',
-			imzaId: imza.id
+			imzaId: imza.id,
+			ad_soyad: imza.ad_soyad,
+			sehir: imza.sehir,
+			dogrulama_tarihi: new Date().toISOString()
 		});
 
 	} catch (error) {

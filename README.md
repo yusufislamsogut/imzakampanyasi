@@ -1,123 +1,111 @@
 # Ülkemde Siyonist İstemiyorum - İmza Kampanyası
 
-Bu proje, HUDAPAR (Hür Dava Partisi) tarafından başlatılan "Ülkemde Siyonist İstemiyorum" imza kampanyası için geliştirilmiş modern bir web uygulamasıdır.
+Bu repo, HÜDA PAR tarafından yürütülen "Ülkemde Siyonist İstemiyorum" kampanyası için hazırlanmış, SvelteKit tabanlı, modern ve performanslı bir web uygulamasıdır. Aşağıdaki dokümantasyon; mimariyi, iş kurallarını, akışları, API sözleşmelerini ve dağıtım süreçlerini ayrıntılı olarak açıklar.
 
-## 🎯 Proje Amacı
+## 🎯 Amaç ve Kapsam
 
-Meclis'e sunulan "Siyonist Faaliyetlerin Yasaklanması ve Soykırım Suçlularının Yargılanması Hakkında Kanun Teklifi"ni desteklemek ve kamuoyunun desteğini almak amacıyla hazırlanmıştır.
+- Kampanyaya destek imzalarının toplanması
+- E-posta doğrulamasıyla imzaların geçerliliğinin teyidi
+- Toplam imza sayısının anlık gösterimi ve paylaşım akışlarının kolaylaştırılması
 
-## 🚀 Özellikler
+## 🧭 Mimari Genel Bakış
 
-### ✅ Tamamlanan Özellikler
-- **Responsive Tasarım**: Tüm cihazlarda uyumlu, modern arayüz
-- **İmza Formu**: Ad-Soyad (zorunlu), E-posta (zorunlu), Şehir, Cinsiyet bilgileri
-- **E-posta Doğrulama**: Mükerrer imza önleme sistemi
-- **İmza Sayacı**: Gerçek zamanlı imza sayısı gösterimi
-- **Sosyal Medya Paylaşımı**: Facebook, WhatsApp, X (Twitter) entegrasyonu
-- **Çoklu Sayfa**: Ana sayfa, Kanun Teklifimiz, İletişim sayfaları
-- **API Entegrasyonu**: RESTful API ile veri yönetimi
-- **HUDAPAR Uyumlu Tasarım**: Ana web sitesi ile uyumlu renk paleti
+- Framework: SvelteKit 2.x (Svelte 5 peer)
+- Styling: Tailwind CSS 4.x (`@tailwindcss/vite` eklentisi ile)
+- Build: Vite 7
+- Adaptör: `@sveltejs/adapter-vercel` (Vercel uyumlu)
+- Dil/Tipler: JS (TS ayak izi mevcut: `app.d.ts`) ve `svelte-check` desteği
 
-### 🔧 Teknik Özellikler
-- **SvelteKit**: Modern, performanslı framework
-- **TailwindCSS**: Utility-first CSS framework
-- **Responsive Design**: Mobile-first yaklaşım
-- **SEO Optimized**: Meta tags ve Open Graph desteği
-- **Form Validasyonu**: Client-side ve server-side validasyon
-- **Error Handling**: Kullanıcı dostu hata yönetimi
-
-## 🛠️ Teknoloji Yığını
-
-- **Frontend**: SvelteKit 2.x
-- **Styling**: TailwindCSS 4.x
-- **Runtime**: Node.js
-- **Package Manager**: npm
-- **Build Tool**: Vite
-
-## 📦 Kurulum
-
-### Gereksinimler
-- Node.js (v18 veya üzeri)
-- npm (v9 veya üzeri)
-
-### Adımlar
-
-1. **Projeyi klonlayın:**
-```bash
-git clone <repository-url>
-cd hudapar-imza-kampanyasi
-```
-
-2. **Bağımlılıkları yükleyin:**
-```bash
-npm install
-```
-
-3. **Geliştirme sunucusunu başlatın:**
-```bash
-npm run dev
-```
-
-4. **Tarayıcıda açın:**
-```
-http://localhost:5173
-```
-
-## 🏗️ Build ve Deploy
-
-### Production Build
-```bash
-npm run build
-```
-
-### Preview (Production build'i test etmek için)
-```bash
-npm run preview
-```
-
-### Linting ve Formatting
-```bash
-npm run check      # Svelte type checking
-npm run format     # Prettier ile kod formatı
-npm run lint       # Prettier ile kod kontrolü
-```
-
-## 📁 Proje Yapısı
+### Proje Yapısı (Gerçek Dosya Hiyerarşisi)
 
 ```
 src/
-├── routes/                 # Sayfa rotaları
-│   ├── +layout.svelte     # Ana layout
-│   ├── +page.svelte       # Ana sayfa (imza formu)
-│   ├── kanun-teklifimiz/  # Kanun teklifi sayfası
-│   ├── iletisim/          # İletişim sayfası
-│   ├── dogrula/[kod]/     # E-posta doğrulama sayfası
-│   └── api/               # API endpoints
-│       ├── imza-ekle/     # İmza ekleme API
-│       ├── imza-sayisi/   # İmza sayısı API
-│       └── dogrula/       # E-posta doğrulama API
-├── lib/                   # Paylaşılan bileşenler
-├── app.html              # HTML template
-├── app.css               # Global CSS
-└── app.d.ts              # TypeScript definitions
+├── app.css               # Tailwind giriş noktası (@import 'tailwindcss')
+├── app.html              # HTML template (meta/OG/Twitter kartları)
+├── app.d.ts              # SvelteKit tür bildirimleri
+├── lib/
+│   ├── database.js       # In-memory imza depolama ve iş kuralları
+│   └── index.js          # (boş) yeniden ihracat noktası
+└── routes/
+    ├── +layout.svelte    # Üst seviye layout: header/footer, nav, responsive menü
+    ├── +page.svelte      # Ana sayfa: imza formu, sayaç, paylaşım akışları
+    ├── kanun-teklifimiz/
+    │   └── +page.svelte  # Bilgilendirme sayfası
+    ├── dogrula/
+    │   └── [kod]/
+    │       └── +page.svelte  # E-posta doğrulama geri dönüş sayfası
+    └── api/
+        ├── imza-ekle/
+        │   └── +server.js    # POST /api/imza-ekle
+        ├── imza-sayisi/
+        │   └── +server.js    # GET /api/imza-sayisi
+        └── dogrula/
+            └── [kod]/
+                └── +server.js# GET /api/dogrula/[kod]
+
+static/
+└── images/
+    ├── logo.png
+    ├── gaza.png
+    └── favicon.png
 ```
 
-## 🖼️ Statik Görseller
+### Yapılandırmalar
 
-- `static/` klasörü altındaki dosyalar doğrudan kök URL'den yayınlanır.
-- Kullanılan görseller:
-  - Logo: `/favicon.svg`
-  - Gazze afişi (hero arkaplanı): `/hero-gaza.jpg` → dosyayı `static/` içine kopyalayın.
+- `svelte.config.js`: Vercel adaptörü etkin.
+- `vite.config.js`: `@tailwindcss/vite` ve `@sveltejs/kit/vite` eklentileri birlikte çalışır.
+- `package.json` önemli scriptler:
+  - `dev`, `build`, `preview`
+  - `check` (svelte-check), `format`, `lint`
+  - Paketleme için `prepack`: `svelte-package` ve `publint` içerir.
 
-Örnek kullanım:
-```html
-<img src="/hero-gaza.jpg" alt="Gazze" />
-```
+## 🧩 İş Kuralları ve Uygulama Akışları
 
-## 🔌 API Endpoints
+### 1) İmza Oluşturma Akışı
+
+- Kullanıcı ana sayfadaki formu doldurur: `adSoyad` (zorunlu), `email` (zorunlu), `sehir` (opsiyonel), `cinsiyet` (opsiyonel).
+- İstemci tarafı validasyonları:
+  - Boş alan kontrolü (adSoyad/email)
+  - E-posta regex kontrolü
+- Sunucu tarafı (POST `/api/imza-ekle`):
+  - Zorunlu alan kontrolü ve e-posta format kontrolü
+  - Mükerrer e-posta kontrolü: `findImzaByEmail`
+  - Yeni imza `addImza` ile eklenir (in-memory)
+  - Doğrulama kodu (`dogrulamaKodu`) üretilir ve loglanır (gerçek uygulamada e-posta gönderilir)
+  - Başarılı cevap döner ve istemci paylaşım modalını gösterir
+
+Notlar:
+- Şu an veriler RAM üzerindedir. Uygulama yeniden başlatıldığında imzalar sıfırlanır.
+- E-posta gönderimi henüz gerçek bir servisle entegre değildir (logda simüle edilir).
+
+### 2) E-posta Doğrulama Akışı
+
+- Kullanıcı e-posta ile iletilen linke tıklar: `/dogrula/[kod]` sayfası açılır.
+- Sayfa, API çağrısı yapar: GET `/api/dogrula/[kod]`
+- Sunucu tarafı:
+  - `findImzaByDogrulamaKodu` ile kayıt bulunur
+  - Zaten doğrulanmışsa bilgi mesajı verir
+  - Değilse, `dogrulaImza` ile işaretlenir
+  - Başarılı/başarısız durumlar uygun HTTP kodlarıyla döner
+
+### 3) İmza Sayacı
+
+- GET `/api/imza-sayisi` sonucu:
+  - `toplam`: 1247 başlangıç değeri + doğrulanmış imzaların sayısı
+  - `hedef`: 10000
+  - `yuzde`: `min(toplam/hedef*100, 100)`
+  - `son24Saat`: son 24 saatte doğrulanan imza sayısı
+
+### 4) Sosyal Paylaşım
+
+- Başarılı imza sonrası modal üzerinden Facebook/WhatsApp/X paylaşım linkleri yeni pencerede açılır.
+
+## 🔌 API Sözleşmeleri
 
 ### POST `/api/imza-ekle`
-İmza ekleme endpoint'i
+
+İstek gövdesi:
+
 ```json
 {
   "adSoyad": "Ahmet Yılmaz",
@@ -127,107 +115,171 @@ src/
 }
 ```
 
-### GET `/api/imza-sayisi`
-İmza sayısı bilgisi
+Başarılı cevap:
+
 ```json
 {
-  "toplam": 1247,
+  "success": true,
+  "message": "İmzanız kaydedildi. E-posta adresinize doğrulama linki gönderildi.",
+  "imzaId": 2
+}
+```
+
+Hata örnekleri (HTTP 400):
+
+```json
+{ "error": "Ad-Soyad ve e-posta alanları zorunludur." }
+```
+
+```json
+{ "error": "Geçerli bir e-posta adresi giriniz." }
+```
+
+```json
+{ "error": "Bu e-posta adresi ile daha önce imza verilmiş." }
+```
+
+Sunucu hatası (HTTP 500): `{ "error": "Sunucu hatası. Lütfen tekrar deneyin." }`
+
+### GET `/api/imza-sayisi`
+
+Örnek cevap:
+
+```json
+{
+  "toplam": 1305,
   "hedef": 10000,
-  "yuzde": 12.47
+  "yuzde": 13.05,
+  "son24Saat": 58
 }
 ```
 
 ### GET `/api/dogrula/[kod]`
-E-posta doğrulama endpoint'i
 
-## 🎨 Tasarım Sistemi
+Başarılı doğrulama:
 
-### Renk Paleti
-- **Birincil Renk**: Green-700 (#15803d) - HUDAPAR teması
-- **İkincil Renk**: Green-600 (#16a34a)
-- **Arka Plan**: Gray-50 (#f9fafb)
-- **Metin**: Gray-800 (#1f2937)
-
-### Tipografi
-- **Ana Font**: System font stack (Inter, sans-serif)
-- **Başlıklar**: Font-bold
-- **Gövde Metni**: Font-normal
-
-## 🔒 Güvenlik Özellikleri
-
-- **E-posta Validasyonu**: Regex ile format kontrolü
-- **Mükerrer İmza Önleme**: E-posta bazlı kontrol
-- **Form Validasyonu**: Client ve server-side
-- **XSS Koruması**: SvelteKit built-in koruması
-- **CSRF Koruması**: SvelteKit built-in koruması
-
-## 📱 Responsive Breakpoints
-
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
-
-## 🚀 Deployment
-
-### Vercel (Önerilen)
-1. Vercel hesabınıza giriş yapın
-2. Projeyi import edin
-3. Build ayarları otomatik algılanacak
-4. Deploy edin
-
-### Netlify
-1. Netlify hesabınıza giriş yapın
-2. Projeyi drag & drop ile yükleyin
-3. Build command: `npm run build`
-4. Publish directory: `build`
-
-### Geleneksel Hosting
-```bash
-npm run build
-# build klasörünü sunucunuza yükleyin
+```json
+{
+  "success": true,
+  "message": "E-posta adresiniz başarıyla doğrulandı. İmzanız artık geçerli!",
+  "imzaId": 2
+}
 ```
 
-## 🔮 Gelecek Geliştirmeler
+Zaten doğrulanmış:
 
-### Planlanan Özellikler
-- **Veritabanı Entegrasyonu**: PostgreSQL/MySQL
-- **E-posta Servisi**: SMTP ile otomatik e-posta gönderimi
-- **Admin Paneli**: İmza yönetimi ve istatistikler
-- **Gelişmiş Analytics**: Google Analytics entegrasyonu
-- **Multi-language**: İngilizce dil desteği
-- **PWA**: Progressive Web App özellikleri
+```json
+{
+  "success": true,
+  "message": "Bu e-posta adresi zaten doğrulanmış.",
+  "zatenDogrulanmis": true
+}
+```
 
-### Teknik İyileştirmeler
-- **Caching**: Redis ile performans optimizasyonu
-- **Rate Limiting**: API abuse önleme
-- **Image Optimization**: WebP format desteği
-- **CDN**: Static asset'ler için CDN kullanımı
+Geçersiz kod (HTTP 404): `{ "error": "Geçersiz doğrulama kodu." }`
 
-## 🤝 Katkıda Bulunma
+## 🔒 Güvenlik ve Gizlilik
 
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/yeni-ozellik`)
-3. Commit yapın (`git commit -am 'Yeni özellik eklendi'`)
-4. Push yapın (`git push origin feature/yeni-ozellik`)
-5. Pull Request oluşturun
+- İstemci ve sunucu tarafı form validasyonları mevcuttur.
+- CSRF/XSS: SvelteKit’in varsayılan korumaları faydalanılır.
+- Mükerrer imza önleme: e-posta bazlı kontrol ile sağlanır.
+- Gizlilik: Veriler sadece kampanya amacıyla işlenmelidir. Şu an kalıcı depolama yoktur.
 
-## 📄 Lisans
+## ⚠️ Bilinen Kısıtlar ve Riskler
 
-Bu proje HUDAPAR - Hür Dava Partisi tarafından geliştirilmiştir.
+- Kalıcı depolama yok (in-memory). Uygulama yeniden başlatıldığında tüm imzalar silinir.
+- E-posta doğrulama gerçekten gönderilmez; log ile simüle edilir.
+- Rate limiting yok. Spam ve kötüye kullanımı engellemek için eklenmelidir.
 
-## 📞 İletişim
+## 🔮 Yol Haritası (Öneriler)
 
-- **Web**: [hudapar.org](https://hudapar.org)
-- **E-posta**: info@hudapar.org
-- **Kampanya Sitesi**: [imzala.hudapar.org](https://imzala.hudapar.org)
+- Kalıcı DB (PostgreSQL/MySQL) ve migration stratejisi
+- SMTP/Transactional e-posta entegrasyonu (Mailgun, SES, Postmark)
+- Yönetim paneli (doğrulanmış imzalar listesi/istatistikler/eksport)
+- Rate limiting (IP/e-posta bazlı), reCAPTCHA/Turnstile
+- Kişisel Verilerin Korunması (KVKK) metinleri ve açık rıza akışları
+- Telemetri/Analitik (Privacy-first, self-hosted önerilir)
+- PWA ve önbellekleme stratejileri
 
-## 🙏 Teşekkürler
+## 🛠️ Kurulum
 
-Bu projeyi geliştirirken kullanılan açık kaynak projelere teşekkürler:
-- [SvelteKit](https://kit.svelte.dev/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [Vite](https://vitejs.dev/)
+### Gereksinimler
+
+- Node.js ≥ 18
+- npm ≥ 9
+
+### Adımlar
+
+1) Depoyu klonlayın ve dizine geçin:
+
+```bash
+git clone <repository-url>
+cd hudapar-imza-kampanyasi
+```
+
+2) Bağımlılıkları yükleyin:
+
+```bash
+npm install
+```
+
+3) Geliştirme sunucusunu başlatın:
+
+```bash
+npm run dev
+```
+
+4) Tarayıcıda açın: `http://localhost:5173`
+
+### Kalite Kontrolleri
+
+```bash
+npm run check   # svelte-check
+npm run format  # prettier --write
+npm run lint    # prettier --check
+```
+
+## 🚀 Build ve Dağıtım
+
+### Production build
+
+```bash
+npm run build
+```
+
+### Önizleme
+
+```bash
+npm run preview
+```
+
+### Vercel (önerilen)
+
+- Projeyi Vercel’e içe aktarın, adaptör otomatik uyumludur.
+- Ortam değişkeni gereksinimi yoktur (şu anki sürüm).
+
+> Not: Kalıcı veritabanı ve e-posta servisleri eklendiğinde ilgili ortam değişkenlerini tanımlayın.
+
+## 🎨 UI/UX Notları
+
+- Renk paleti: green-700/600 ağırlıklı; arka plan `gray-50`, metin `gray-800`.
+- Tipografi: Sistem fontları, başlıklar `font-bold`.
+- Responsive kırılımlar: mobile (<768), tablet (768-1024), desktop (>1024).
+
+## 🙌 Katkı ve İletişim
+
+Katkı akışı:
+
+1. Fork
+2. Branch açın: `git checkout -b feature/x`
+3. Commit: `git commit -m "Açıklayıcı mesaj"`
+4. Push ve PR oluşturun
+
+İletişim:
+
+- Web: `https://hudapar.org`
+- E-posta: `info@hudapar.org`
 
 ---
 
-**"Ülkemde Siyonist İstemiyorum!"** - Adalet için birlikte duruyoruz.
+"Ülkemde Siyonist İstemiyorum" – Adalet için birlikte duruyoruz.

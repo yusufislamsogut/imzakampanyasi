@@ -17,7 +17,7 @@
 
 
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 flex flex-col">
 	<!-- Header -->
 <header class="bg-green-700 text-white shadow-lg">
 		<div class="container mx-auto px-4">
@@ -68,12 +68,12 @@
 	</header>
 
 	<!-- Main content -->
-	<main class="container mx-auto px-4 py-8">
+	<main class="container mx-auto px-4 py-8 flex-1">
 		<slot />
 	</main>
 
 	<!-- Footer -->
-	<footer class="bg-green-800 text-white py-6 mt-auto">
+	<footer class="bg-green-800 text-white py-6">
 		<div class="container mx-auto px-4 flex flex-col items-center gap-2 text-center">
 			<img src="/images/logo.png" alt="HÜDA PAR" class="w-8 h-8 rounded-full bg-white p-1 object-contain" />
 			<p class="text-sm">© 2025 HÜDA PAR - Hür Dava Partisi</p>
