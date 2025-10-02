@@ -1,0 +1,12 @@
+Merhaba {{ad_soyad}},
+
+{{kampanya_adi}} için imzanızı oluşturduğunuz için teşekkür ederiz.
+İmzanızın geçerli olabilmesi için aşağıdaki bağlantıyı açarak e‑posta adresinizi doğrulayın:
+
+{{dogrulama_linki}}
+
+Buton/bağlantı çalışmazsa yukarıdaki URL'yi tarayıcınıza kopyalayabilirsiniz.
+
+Yardım için: info@hudapar.org
+HÜDA PAR | {{kampanya_adi}}
+© {{yil}} Tüm hakları saklıdır.
