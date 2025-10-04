@@ -1,4 +1,5 @@
 <script>
+
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 
@@ -16,6 +17,7 @@
 	let showSuccess = false;
 	let errorMessage = '';
 	let errorType = '';
+	/** @type {any} */
 	let existingImza = null;
 	let showShareButtons = false;
 
@@ -127,7 +129,7 @@
 	>
 		{#if data.ayarlar.hero_gorsel}
 			<img
-				src="http://localhost:2357/assets/{data.ayarlar.hero_gorsel.id}"
+				src="/api/assets/{data.ayarlar.hero_gorsel.id}"
 				alt="{data.ayarlar.baslik}"
 				class="absolute inset-0 h-full w-full object-cover"
 			/>

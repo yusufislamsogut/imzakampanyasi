@@ -1,5 +1,6 @@
 
-import { createDirectus,
+import {
+	createDirectus,
 	readItems,
 	readSingleton,
 	rest,
@@ -7,13 +8,20 @@ import { createDirectus,
 	updateItem,
 	aggregate,
 	withToken,
-    authentication} from '@directus/sdk';
+	authentication,
+	readAssetRaw
+} from '@directus/sdk';
+import { env } from '$env/dynamic/private';
 
-const directus = createDirectus('http://localhost:2357')
-  .with(rest())
-  .with(authentication());
+// Environment değişkenlerini al, yoksa default değerleri kullan
+const BASE_URL = env.BASE_URL;
+const DIRECTUS_TOKEN = env.DIRECTUS_TOKEN;
+
+const directus = createDirectus(BASE_URL)
+	.with(rest())
+	.with(authentication());
 
 // Static token ile kimlik doğrulama
-directus.setToken('0R4bhkloS7M8mr7mwMq8L-hmnJPzoVVa');
+directus.setToken(DIRECTUS_TOKEN);
 
-export { directus, readItems, readSingleton, createItem, updateItem, withToken, aggregate };
+export { directus, readItems, readSingleton, createItem, updateItem, withToken, aggregate, readAssetRaw };

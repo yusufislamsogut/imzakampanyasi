@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  imza-kampanyasi:
+    image: strateji/imza-kampanyasi:latest
+    build: 
+      context: .
+      args:
+        - BASE_URL=http://localhost:2357
+        - DIRECTUS_TOKEN=0R4bhkloS7M8mr7mwMq8L-hmnJPzoVVa
+    container_name: imza-kampanyasi-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - BASE_URL=http://localhost:2357
+      - DIRECTUS_URL=http://localhost:2357
+      - DIRECTUS_TOKEN=0R4bhkloS7M8mr7mwMq8L-hmnJPzoVVa
+      - ORIGIN=http://localhost:3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
